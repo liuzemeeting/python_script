@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <style>
+        .container{
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/add?{{ condition }}"><button class="btn btn-primary">添加</button></a>
+    <div class="row " style="margin-top: 10px">
+            <ul>
+                {% for foo in index_list %}
+                    <li>{{ foo }}</li>
+                {% endfor %}
+            </ul>
+            <nav aria-label="Page navigation" class="pull-right">
+                <ul class="pagination">
+                    {{ html|safe }}
+                </ul>
+            </nav>
+    </div>
+</div>
+</body>
+</html>
