@@ -7,7 +7,7 @@ graph = Graph('http://192.168.99.100:7474', username="neo4j", password="123456")
 # nodes = Graph.nodes
 if __name__ == "__main__":
     # 创建结点
-    wall = Node('Build_Test', name="墙")
+    wall = Node('House', name="residence")
     nodes = graph.nodes
     data = nodes.match("Build_Test", name="门")
     door = Node('Build_Test', name="门口")
