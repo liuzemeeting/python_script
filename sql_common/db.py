@@ -1,6 +1,6 @@
 import copy
 import threading
-from common import mysql_pool
+from sql_common import mysql_pool
 IntType = int
 
 __all__ = [

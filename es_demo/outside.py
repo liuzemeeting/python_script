@@ -172,3 +172,5 @@ if stair_data["stair_floor"] < 7:
     stair_floor_data = stair_data_stand["staircase_ladder"].get(6)
 else:
     stair_floor_data = stair_data_stand["staircase_ladder"].get(7)
+if stair_data["staircase_ladder"]["width"] < stair_floor_data["width"]:
+    rule.append(stair_floor_data["rule"])

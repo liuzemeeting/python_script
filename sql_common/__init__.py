@@ -7,11 +7,11 @@ db = Hub(pymysql)
 
 db_config = {
     "default": dict(
-                host="47.104.236.9",
+                host="192.168.99.96",
                 port=3306,
                 user="root",
-                passwd="taobeibei123.",
-                db="taobeibei",
+                passwd="123456",
+                db="dwg",
     )
 }
 
