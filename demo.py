@@ -1,10 +1,11 @@
-﻿from common import db
+﻿from sql_common import db
 
 
 data = [{"id": 1, "pid": 0, "name": " 超级管理组"},
 {"id": 2, "pid": 1, "name": "麦莎国际"},
 {"id": 7, "pid": 2, "name": "王者队"},
 {"id": 16, "pid": 7, "name": "王者队员工"},
+{"id": 1116, "pid": 16, "name": "王者队员工"},
 {"id": 9, "pid": 2, "name": "疯狂队"},
 {"id": 17, "pid": 9, "name": "疯狂队员工"},
 {"id": 10, "pid": 2, "name": "牛人队"},
@@ -79,7 +80,9 @@ data = [{"id": 1, "pid": 0, "name": " 超级管理组"},
 {"id": 106, "pid": 105, "name": "1队员工"},
 {"id": 108, "pid": 104, "name": "2队"},
 {"id": 109, "pid": 104, "name": "2队员工"}]
-if __name__ == '__main__':
+
+
+# if __name__ == '__main__':
     # data_dict = {obj["id"]: obj for obj in data}
     # data_ids = list(data_dict.keys())
     # data_ids.sort()
@@ -95,33 +98,127 @@ if __name__ == '__main__':
     #     }
     #     data_list.append(d)
     # db.default.system_group.bulk_create(data_list, ignore=True)
-    sql = """select * from system_group"""
-    data = db.default.fetchall_dict(sql)
+    # sql = """select * from system_group"""
+    # data = db.default.fetchall_dict(sql)
+    #
+    # data_list = []
+    # for i in data:
+    #     pass
 
+
+class Tree:
+
+    def __init__(self, value):
+        self.value = value
+        self.sub_node_list = []
+
+    def add_sub_node(self, sub_node):
+        self.sub_node_list.append(sub_node)
+
+    def add_sub_node_with_dict_with_uncertain_layers(self, sub_node_list):
+        # 使用一个list初始化Tree
+        if not isinstance(sub_node_list, list):
+            raise TypeError("sub_node_dict must be dict")
+        pop_num = 0
+        for _value in sub_node_list:
+            if _value["pid"] == self.value["id"]:
+                sub_node = Tree(_value)
+                self.sub_node_list.append(sub_node)
+                pop_num += 1
+        if pop_num == len(sub_node_list):
+            # 仅有两个层级
+            return
+        # 具有多个层级
+        flag = True # list中出现不属于任何一个节点的子孙的情况下解除循环
+        now_node = list(self.sub_node_list) # 循环子孙节点
+        next_node = []
+        while flag and pop_num < len(sub_node_list):
+            last_pop_num = pop_num
+            for self_node in now_node:
+                for sub_node_in_list in sub_node_list:
+                    if sub_node_in_list["pid"] == self_node.value["id"]:
+                        sub_node = Tree(sub_node_in_list)
+                        self_node.sub_node_list.append(sub_node)
+                        pop_num += 1
+                        next_node.append(sub_node)
+
+            if last_pop_num == pop_num:
+                # 出现不属于任何节点子孙的节点，解除循环
+                break
+            now_node = list(next_node)
+            next_node = []
+
+    def make_dict(self):
+        _dict = self.value
+        _dict["subNode"] = []
+        for d in self.sub_node_list:
+            _dict["subNode"].append(d.make_dict())
+        return _dict
+
+
+def get_data(data):
+    """
+
+    :param data:
+    :return:
+    """
     data_list = []
-    for i in data:
-        pass
+    if data:
+        for n in data:
+            d = {
+                "id": n["id"],
+                "name": n["name"],
+                "pid": n["pid"]
+            }
+            data_list.append(d)
+            if n["subNode"]:
+                return True, data_list, n["subNode"]
+    return False, data_list, []
 
 
-<<<<<<< HEAD
-def foo(item, data):
-    pass
-=======
-if __name__ == "__main__":
-    # dd(sys.argv)
-    a = 10
-    if a > 9:
-        print("1")
-    elif a > 8:
-        print("2")
-    elif a > 7:
-        print("12")
-    elif a > 6:
-        print("4")
-    elif a > 5:
-        print("15")
-    elif a > 4:
-        print("1666")
-    else:
-        print("fffffffffffffffff")
->>>>>>> ee5b45c5820006695e9580aa2ee620104a5cfaac
+if __name__ == '__main__':
+    data = data
+    root = Tree(data[0])
+    root.add_sub_node_with_dict_with_uncertain_layers(data)
+    print(root.make_dict())
+    tree_data = root.make_dict()
+    data_list = []
+    d = {
+        "id": tree_data["id"],
+        "name": tree_data["name"],
+        "pid": tree_data["pid"]
+    }
+    data_list.append(d)
+    for item in tree_data["subNode"]:
+        id = item["id"]
+        name = item["name"]
+        pid = 1
+        d = {
+            "id": item["id"],
+            "name": item["name"],
+            "pid": item["pid"]
+        }
+        data_list.append(d)
+        if item["subNode"]:
+            for m in item["subNode"]:
+                d = {
+                    "id": m["id"],
+                    "name": m["name"],
+                    "pid": m["pid"]
+                }
+                data_list.append(d)
+                flag = False
+                if m["subNode"]:
+                    flag = True
+                sub_data = m["subNode"]
+                while flag:
+                    flag, d_list, sub_data = get_data(sub_data)
+                    data_list += d_list
+    print(data_list)
+    for item in data_list:
+        print(item)
+
+
+
+
+

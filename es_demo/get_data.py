@@ -1,4 +1,5 @@
 from sql_common import db
+from es_demo.compare import compare
 
 
 def get_room_data():
@@ -10,11 +11,14 @@ def get_room_data():
     sql = """
         SELECT
             ap.apartno,
+            ap.height ap_height,
             ap.apartname,
             ap.apartdesc,
             rm.id roomno,
             rm.`name` room_name,
-            rm.min_area area
+            rm.min_area area,
+            rm.min_height,
+            rm.min_part_height
         FROM
             A_apart ap
             INNER JOIN B_room rm ON ap.apartno = rm.apart_id
@@ -40,6 +44,8 @@ def get_room_data():
             if item.room_name in ["主卧", "次卧", "儿童房", "大次卧", "客厅"]:
                 room = {}
                 room["roomno"] = item.roomno
+                room["min_height"] = item.min_height
+                room["min_part_height"] = item.min_part_height
                 room["area"] = item.area
                 room["door"] = get_door_data(item.roomno)
                 rooms.append(room)
@@ -58,7 +64,7 @@ def get_room_data():
         apart["toliet"] = toliet
         apart_data.append(apart)
 
-    print(apart_data)
+    compare(apart_data)
 
 
 def get_door_data(roomno):
