@@ -16,7 +16,8 @@ def get_room_data():
             ap.apartdesc,
             rm.id roomno,
             rm.`name` room_name,
-            rm.min_area area,
+            rm.area,
+            rm.min_part_area,
             rm.min_height,
             rm.min_part_height
         FROM
@@ -40,13 +41,15 @@ def get_room_data():
         toliet = []
         cook_room = []
         for item in value:
-            # print(item)
+            print(item)
+            apart["height"] = item.ap_height
             if item.room_name in ["主卧", "次卧", "儿童房", "大次卧", "客厅"]:
                 room = {}
                 room["roomno"] = item.roomno
                 room["min_height"] = item.min_height
                 room["min_part_height"] = item.min_part_height
                 room["area"] = item.area
+                room["min_part_area"] = item.min_part_area
                 room["door"] = get_door_data(item.roomno)
                 rooms.append(room)
             if item.room_name in ["卫生间"]:
