@@ -21,7 +21,7 @@ def get_room_data():
             rm.min_height,
             rm.min_part_height
         FROM
-            A_apart ap
+            B_apart ap
             INNER JOIN B_room rm ON ap.apartno = rm.apart_id
     """
     data = db.default.fetchall_dict(sql)
@@ -66,7 +66,7 @@ def get_room_data():
         apart["cook_room"] = cook_room
         apart["toliet"] = toliet
         apart_data.append(apart)
-
+    print("apart_data", apart_data)
     compare(apart_data)
 
 

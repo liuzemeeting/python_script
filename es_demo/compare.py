@@ -18,7 +18,6 @@ def compare(apartment):
     apart_wrong_data = []
     door_list = []
     for item in apartment:
-        print("Item",item)
         apart_wrong = {}
         if item["height"] != height_data["heigh"]:
             apart_wrong["apart_id"] = item["apart_id"]
@@ -60,10 +59,8 @@ def compare(apartment):
                         rules.append(room_rule_data["min_part_area"]["rule"])
                 door_data = {"room_id": i["roomno"], "door_ids": door_ids}
                 door_list.append(door_data)
-            print("door_list", door_list)
         apart_wrong["room_data"] = room_ids
         apart_wrong["door_data"] = door_list
-        print("apart_wrong", apart_wrong)
         # 检测卫生间规范
         toliet_rule_data = rule_data["toliets"]
         for m in item["toliet"]:
@@ -76,30 +73,22 @@ def compare(apartment):
                 rules.append(toliet_rule_data["rule"])
             if t_rule_data:
                 if m["height"] < t_rule_data["height"]["height"]:
-                    m["height"] = {"height": m["height"], "status": 1}
+                    room_ids.append(i["roomno"])
                     rules.append(t_rule_data["height"]["rule"])
-                else:
-                    m["height"] = {"height": m["height"], "status": 0}
                 if m["water_distince"] < t_rule_data["water_distince"]["water_distince"]:
-                    m["water_distince"] = {"water_distince": m["water_distince"], "status": 1}
+                    room_ids.append(i["roomno"])
                     rules.append(t_rule_data["water_distince"]["rule"])
-                else:
-                    m["water_distince"] = {"water_distince": m["water_distince"], "status": 0}
                 if m["area"] < t_rule_data["area"]["area"]:
-                    m["area"] = {"area": m["area"], "status": 1}
+                    room_ids.append(i["roomno"])
                     rules.append(t_rule_data["area"]["rule"])
                 else:
                     m["area"] = {"area": m["area"], "status": 0}
-                if m["door"]["height"] >= t_rule_data["door"]["height"] and m["door"]["width"] >= t_rule_data["door"]["width"]:
-                    m["door"]["status"] = 0
-                else:
-                    m["door"]["status"] = 1
+                if m["door"]["height"] < t_rule_data["door"]["height"] or m["door"]["width"] < t_rule_data["door"]["width"]:
+                    room_ids.append(i["roomno"])
                     rules.append(t_rule_data["door"]["rule"])
                 if m["door"]["width"] < t_rule_data["door"]["width"]:
-                    m["door"]["width"] = {"width": m["door"]["width"], "status": 1}
+                    room_ids.append(i["roomno"])
                     rules.append(t_rule_data["door"]["rule"])
-                else:
-                    m["door"]["width"] = {"width": m["door"]["width"], "status": 0}
         else:
             print("ffffffffffffffff")
         # 检测厨房规范
@@ -122,12 +111,13 @@ def compare(apartment):
                     i["water_distince"] = {"water_distince": i["water_distince"], "status": 0}
                 else:
                     i["water_distince"] = {"water_distince": i["water_distince"], "status": 1}
-                if i["door"]["height"] >= cook_rule_data["door"]["height"] and i["door"]["width"] >= cook_rule_data["door"]["width"]:
+                if i["door"]["height"] < cook_rule_data["door"]["height"] and i["door"]["width"] < cook_rule_data["door"]["width"]:
                     i["door"].update({"status": 0})
                 else:
                     i["door"].update({"status": 1})
+        apart_wrong_data.append(apart_wrong)
+    print("apart_wrong_data", apart_wrong_data)
     print(rules)
-    print("apartment", apartment)
 
 
 
