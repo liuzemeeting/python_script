@@ -196,7 +196,25 @@ def r_measure_data(file_img, brow_eye_rate, eye_nose_rate, nose_mouth_rate, mout
     document.save('测试文档3.docx')
 
 
-def r_table_data():
+def r_table_data(material_mouth_brow=None, sample_mouth_brow=None, result_mouth_brow=None, material_nose_among=None,
+                 sample_nose_among=None, result_nose_among=None, material_mouth=None, sample_mouth=None,
+                 result_mouth=None, material_ear=None, sample_ear=None, result_ear=None):
+    """
+    人像细节特征比较图
+    :param material_mouth_brow:  眼睛及眉毛检材细节特征
+    :param sample_mouth_brow:    眼睛及眉毛样本细节特征
+    :param result_mouth_brow:    眼睛及眉毛细节特征一致性比对结果
+    :param material_nose_among:  鼻部及人中特征检材细节特征
+    :param sample_nose_among:    鼻部及人中特征样本细节特征
+    :param result_nose_among:    鼻部及人中特征细节特征一致性比对结果
+    :param material_mouth:       唇部特征检材细节特征
+    :param sample_mouth:         唇部特征样本细节特征
+    :param result_mouth:         唇部特征细节特征一致性比对结果
+    :param material_ear:         耳部特征检材细节特征
+    :param sample_ear:           耳部特征样本细节特征
+    :param result_ear:           耳部细节特征一致性比对结果
+    :return:
+    """
     document = Document()
     document.styles['Normal'].font.name = u'微软雅黑'
     document.styles['Normal'].font.size = Pt(14)
@@ -227,7 +245,48 @@ def r_table_data():
     table.cell(2, 0).text = '鼻部及人中特征'
     table.cell(3, 0).text = '唇部特征'
     table.cell(4, 0).text = '耳部特征'
-    run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
-    run.add_picture('2.png')
+    # 眼睛及眉毛特征
+    if material_mouth_brow:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{material_mouth_brow}")
+    if sample_mouth_brow:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{sample_mouth_brow}")
+    if result_mouth_brow:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{result_mouth_brow}")
 
-    document.save('测试文档2.docx')  # 以“客户名-价格通知”作为文件名保存
+    # 鼻部及人中特征
+    if material_nose_among:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{material_nose_among}")
+    if sample_nose_among:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{sample_nose_among}")
+    if result_nose_among:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{result_nose_among}")
+
+    # 唇部特征
+    if material_mouth:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{material_mouth}")
+    if sample_mouth:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{sample_mouth}")
+    if result_mouth:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{result_mouth}")
+
+    # 耳部特征
+    if material_ear:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{material_ear}")
+    if sample_ear:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{sample_ear}")
+    if result_ear:
+        run = document.tables[0].cell(1, 2).paragraphs[0].add_run()
+        run.add_picture(f"{result_ear}")
+
+    document.save('测试文档2.docx')

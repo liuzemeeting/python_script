@@ -65,34 +65,42 @@ def compare(apartment):
         toliet_rule_data = rule_data["toliets"]
         for m in item["toliet"]:
             t_rule_data = {}
-            for item in toliet_rule_data["toliet"]:
-                if m["bianqi"] == item["bianqi"] and m["xiyuqi"] == item["xiyuqi"] \
-                        and m["ximianqi"] == item["ximianqi"] and m["xiyiji"] == item["xiyiji"]:
-                    t_rule_data = item
+            for n in toliet_rule_data["toliet"]:
+                if m["bianqi"] == n["bianqi"] and m["xiyuqi"] == n["xiyuqi"] \
+                        and m["ximianqi"] == n["ximianqi"] :
+                    t_rule_data = n
+                    print("t_rule_data", t_rule_data)
             else:
+                print("gggggggg")
+                # room_ids.append(m["roomno"])
                 rules.append(toliet_rule_data["rule"])
             if t_rule_data:
-                if m["height"] < t_rule_data["height"]["height"]:
-                    room_ids.append(i["roomno"])
-                    rules.append(t_rule_data["height"]["rule"])
-                if m["water_distince"] < t_rule_data["water_distince"]["water_distince"]:
-                    room_ids.append(i["roomno"])
-                    rules.append(t_rule_data["water_distince"]["rule"])
+                flag = True
+                # if m["height"] < t_rule_data["height"]["height"]:
+                #     flag = False
+                #
+                #     rules.append(t_rule_data["height"]["rule"])
+                # if m["water_distince"] < t_rule_data["water_distince"]["water_distince"]:
+                #
+                #     flag = False
+                #     rules.append(t_rule_data["water_distince"]["rule"])
                 if m["area"] < t_rule_data["area"]["area"]:
-                    room_ids.append(i["roomno"])
+
+                    flag = False
                     rules.append(t_rule_data["area"]["rule"])
-                else:
-                    m["area"] = {"area": m["area"], "status": 0}
-                if m["door"]["height"] < t_rule_data["door"]["height"] or m["door"]["width"] < t_rule_data["door"]["width"]:
-                    room_ids.append(i["roomno"])
-                    rules.append(t_rule_data["door"]["rule"])
-                if m["door"]["width"] < t_rule_data["door"]["width"]:
-                    room_ids.append(i["roomno"])
-                    rules.append(t_rule_data["door"]["rule"])
+                if not flag:
+                    room_ids.append(m["roomno"])
+                # if m["door"]["height"] < t_rule_data["door"]["height"] or m["door"]["width"] < t_rule_data["door"]["width"]:
+                #     room_ids.append(m["roomno"])
+                #     rules.append(t_rule_data["door"]["rule"])
+                # if m["door"]["width"] < t_rule_data["door"]["width"]:
+                #     room_ids.append(m["roomno"])
+                #     rules.append(t_rule_data["door"]["rule"])
         else:
             print("ffffffffffffffff")
         # 检测厨房规范
         c_rule_data = []
+        print("item", item)
         for i in item["cook_room"]:
             min_dict = {}
             for item in rule_data["cook_rooms"]["cook_room"]:

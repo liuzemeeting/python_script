@@ -1,6 +1,6 @@
 import re
 import redis
-from common import db
+from sql_common import db
 
 if __name__ == "__main__":
     f = open("test.txt", "r", encoding="gbk")
