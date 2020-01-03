@@ -32,7 +32,7 @@ class public_Compare:
                 floor = 18
             if item["floor"] < 10:
                 floor = 10
-            rule_floor = rule_exit_data["outside"].get(str(floor))
+            rule_floor = rule_exit_data["outside"].get(str(item["floor"]))
             flag = True
             if item["build_area"] < rule_floor["bulid_area"] or item["build_area"] < rule_floor["bulid_area"] \
                     or item["build_area"] < rule_floor["bulid_area"]:
@@ -91,14 +91,48 @@ class public_Compare:
                         rules.append(room_rule_data["min_part_area"]["rule"])
                 door_data = {"room_id": i["roomno"], "door_ids": door_ids}
 
-    def cook_room_compare(self):
+    def toilent_compare(self, toliet_data):
         """
         厨房数据对比
         :return:
         """
-        pass
+        toliet_rule_data = self.rule_data["toliets"]
+        rules = []
+        room_ids = []
+        for m in toliet_data:
+            t_rule_data = {}
+            for n in toliet_rule_data["toliet"]:
+                if m["bianqi"] == n["bianqi"] and m["xiyuqi"] == n["xiyuqi"] \
+                        and m["ximianqi"] == n["ximianqi"]:
+                    t_rule_data = n
+                    print("t_rule_data", t_rule_data)
+            else:
+                print("gggggggg")
+                # room_ids.append(m["roomno"])
+                rules.append(toliet_rule_data["rule"])
+            if t_rule_data:
+                flag = True
+                # if m["height"] < t_rule_data["height"]["height"]:
+                #     flag = False
+                #
+                #     rules.append(t_rule_data["height"]["rule"])
+                # if m["water_distince"] < t_rule_data["water_distince"]["water_distince"]:
+                #
+                #     flag = False
+                #     rules.append(t_rule_data["water_distince"]["rule"])
+                if m["area"] < t_rule_data["area"]["area"]:
+                    flag = False
+                    rules.append(t_rule_data["area"]["rule"])
+                if not flag:
+                    room_ids.append(m["roomno"])
+                # if m["door"]["height"] < t_rule_data["door"]["height"] or m["door"]["width"] < t_rule_data["door"]["width"]:
+                #     room_ids.append(m["roomno"])
+                #     rules.append(t_rule_data["door"]["rule"])
+                # if m["door"]["width"] < t_rule_data["door"]["width"]:
+                #     room_ids.append(m["roomno"])
+                #     rules.append(t_rule_data["door"]["rule"])
 
-    def toilent_compare(self):
+    def cook_room_compare(self):
         """
         卫生间数据对比
         :return:
